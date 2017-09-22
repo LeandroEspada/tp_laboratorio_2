@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include"funciones.h"
+#include"prototipos.h"
 
 int main()
 {

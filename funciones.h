@@ -46,6 +46,67 @@ void inicializarvectores(epersona vectordepersonas[tam],epersona vectordepersona
         vectordepersonasauxiliar[i].estado=0;
     }
 }
+/** \brief Recibe un mensaje de una funcion superior, pide un numero al usuario y lo devuelve.
+ *
+ * \param char mensaje[] el mensaje que recibe la funcion para mostrar en pantalla.
+ * \param char nombre[] el string que devuelve la funcion.
+ * \return void.
+ *
+ */
+
+void pedirNombre(char mensaje[], char nombre[50])
+{
+    char aux[200];
+    printf("%s", mensaje);
+    gets(aux);
+    while(strlen(aux)>50)
+    {
+        system("cls");
+        printf("Nombre muy largo, reingrese:  ");
+        gets(aux);
+    }
+    strcpy(nombre,aux);
+}
+/** \brief Recibe un mensaje de una funcion superior, pide un numero al usuario y lo devuelve.
+ *
+ * \param char mensaje[] el mensaje que recibe la funcion para mostrar en pantalla.
+ * \return int num, retorna un numero entero.
+ *
+ */
+int pedirDNI(char mensaje[])
+{
+    int num;
+    printf("%s", mensaje);
+    scanf("%d", &num);
+    while((num<1000000)||(num>99999999))
+    {
+        system("cls");
+        printf("DNI invalido, ingresar de nuevo\n");
+        printf("Reingresar DNI:  ");
+        scanf("%d",&num);
+     }
+     return num;
+}
+/** \brief Recibe un mensaje de una funcion superior, pide un numero al usuario y lo devuelve.
+ *
+ * \param char mensaje[] el mensaje que recibe la funcion para mostrar en pantalla.
+ * \return int num, retorna un numero entero.
+ *
+ */
+int pedirEdad(char mensaje[])
+{
+    int num;
+    printf("%s", mensaje);
+    scanf("%d", &num);
+    while((num<1)||(num>150))
+    {
+        system("cls");
+        printf("Edad invalida, ingresar de nuevo\n");
+        printf("Reingresar edad:  ");
+        scanf("%d",&num);
+     }
+     return num;
+}
 /** \brief Se piden por pantalla al usuario los datos de la nueva persona, antes de eso se verifica si hay lugar en el vector,
 se verifica si el dni ya estaba ingresado. Si el vector tiene lugar y el dni no esta repetido, se guarda a la persona en el vector
  *
@@ -57,31 +118,16 @@ void cargarpersona(epersona vectordepersonas[tam])
 {
     int flag=0,i,j;
     epersona persona;
+    char auxnombre[50];
     for(i=0;i<tam;i++)
     {
         if(vectordepersonas[i].estado==0)
         {
             fflush(stdin);
-            printf("Ingresar nombre de persona:  ");
-            gets(persona.nombre);
-            printf("Ingresar DNI:  ");
-            scanf("%d",&persona.dni);
-            while((persona.dni<1000000)||(persona.dni>99999999))
-            {
-                printf("DNI invalido, ingresar de nuevo");
-                system("cls");
-                printf("Ingresar DNI:  ");
-                scanf("%d",&persona.dni);
-            }
-            printf("Ingresar edad:  ");
-            scanf("%d",&persona.edad);
-            while((persona.edad<1)||(persona.edad>200))
-            {
-                printf("Edad invalida, ingresar de nuevo");
-                system("cls");
-                printf("Ingresar edad:  ");
-                scanf("%d",&persona.edad);
-            }
+            pedirNombre("Ingresar nombre de persona:  ", auxnombre);
+            strcpy(persona.nombre, auxnombre);
+            persona.dni=pedirDNI("Ingresar DNI de persona:  ");
+            persona.edad=pedirEdad("Ingresar edad de persona:  ");
             fflush(stdin);
             for(j=0;j<tam;j++)
             {
@@ -95,7 +141,7 @@ void cargarpersona(epersona vectordepersonas[tam])
                 {
                     persona.estado=1;
                     vectordepersonas[i]=persona;
-                    flag==1;
+                    flag=1;
                     break;
                 }
             }
@@ -119,9 +165,8 @@ vector, la elimina de manera logica.
 void eliminarpersona(epersona vectordepersonas[tam])
 {
     system("cls");
-    int i,acumulador,flag=0,numerodni;
-    printf("Ingrese el DNI de la persona a eliminar: ");
-    scanf("%d", &numerodni);
+    int i,flag=0,numerodni;
+    numerodni=pedirDNI("Ingrese DNI: ");
     fflush(stdin);
     for(i=0;i<tam;i++)
     {
